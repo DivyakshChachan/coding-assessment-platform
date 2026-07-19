@@ -1,0 +1,19 @@
+spring:
+  application:
+    name: coding-assessment-platform
+
+  datasource:
+    url: jdbc:postgresql://localhost:5432/coding_assessment
+    username: divyakshchachan
+    password: postgres
+
+  jpa:
+    hibernate:
+      ddl-auto: none
+    open-in-view: false
+    properties:
+      hibernate:
+        format_sql: true
+
+server:
+  port: 8080
