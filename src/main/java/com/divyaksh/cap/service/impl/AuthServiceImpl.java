@@ -17,6 +17,7 @@ public class AuthServiceImpl implements AuthService {
 
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
+    private final UserMapper userMapper;
 
     @Override
     public UserResponse register(RegisterRequest request) {
@@ -29,12 +30,12 @@ public class AuthServiceImpl implements AuthService {
             throw new DuplicateResourceException("Username already exists");
         }
 
-        User user = UserMapper.toEntity(request);
+        User user = userMapper.toEntity(request);
 
         user.setPassword(passwordEncoder.encode(request.getPassword()));
 
         User savedUser = userRepository.save(user);
 
-        return UserMapper.toResponse(savedUser);
+        return userMapper.toResponse(savedUser);
     }
 }
