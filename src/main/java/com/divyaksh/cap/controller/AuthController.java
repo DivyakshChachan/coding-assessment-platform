@@ -1,7 +1,9 @@
 package com.divyaksh.cap.controller;
 
+import com.divyaksh.cap.dto.request.LoginRequest;
 import com.divyaksh.cap.dto.request.RegisterRequest;
 import com.divyaksh.cap.dto.response.ApiResponse;
+import com.divyaksh.cap.dto.response.AuthResponse;
 import com.divyaksh.cap.dto.response.UserResponse;
 import com.divyaksh.cap.service.AuthService;
 import jakarta.validation.Valid;
@@ -30,5 +32,19 @@ public class AuthController {
                 .build();
 
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
+    }
+    @PostMapping("/login")
+    public ResponseEntity<ApiResponse<AuthResponse>> login(
+            @Valid @RequestBody LoginRequest request) {
+
+        AuthResponse response = authService.login(request);
+
+        return ResponseEntity.ok(
+                new ApiResponse<>(
+                        true,
+                        "Login successful",
+                        response
+                )
+        );
     }
 }
