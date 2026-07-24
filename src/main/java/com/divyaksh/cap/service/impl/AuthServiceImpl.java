@@ -4,6 +4,7 @@ import com.divyaksh.cap.dto.request.LoginRequest;
 import com.divyaksh.cap.dto.request.RegisterRequest;
 import com.divyaksh.cap.dto.response.AuthResponse;
 import com.divyaksh.cap.dto.response.UserResponse;
+import com.divyaksh.cap.entity.Role;
 import com.divyaksh.cap.entity.User;
 import com.divyaksh.cap.exception.DuplicateResourceException;
 import com.divyaksh.cap.mapper.UserMapper;
@@ -38,7 +39,12 @@ public class AuthServiceImpl implements AuthService {
         }
 
         User user = userMapper.toEntity(request);
+        user.setRole(Role.CANDIDATE);
 
+        user.setEnabled(true);
+        user.setAccountNonLocked(true);
+        user.setAccountNonExpired(true);
+        user.setCredentialsNonExpired(true);
         user.setPassword(passwordEncoder.encode(request.getPassword()));
 
         User savedUser = userRepository.save(user);

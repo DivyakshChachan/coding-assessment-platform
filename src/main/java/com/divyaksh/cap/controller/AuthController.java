@@ -47,4 +47,13 @@ public class AuthController {
                 )
         );
     }
+    @RestController
+    @RequestMapping("/api/v1/test")
+    public class TestController {
+
+        @GetMapping("/hello")
+        public String hello() {
+            return "JWT Authentication Working!";
+        }
+    }
 }
