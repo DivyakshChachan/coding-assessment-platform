@@ -1,0 +1,47 @@
+package com.divyaksh.cap.constant;
+
+public enum Tag {
+
+    ARRAY,
+    STRING,
+    HASHMAP,
+    SORTING,
+    BINARY_SEARCH,
+
+    TWO_POINTERS,
+    SLIDING_WINDOW,
+    PREFIX_SUM,
+
+    STACK,
+    QUEUE,
+    DEQUE,
+
+    LINKED_LIST,
+
+    TREE,
+    BINARY_TREE,
+    BST,
+
+    HEAP,
+    PRIORITY_QUEUE,
+
+    GRAPH,
+    DFS,
+    BFS,
+    SHORTEST_PATH,
+    TOPOLOGICAL_SORT,
+    UNION_FIND,
+
+    GREEDY,
+    DYNAMIC_PROGRAMMING,
+    BACKTRACKING,
+    RECURSION,
+
+    BIT_MANIPULATION,
+    MATH,
+    NUMBER_THEORY,
+
+    TRIE,
+    SEGMENT_TREE,
+    FENWICK_TREE
+}
