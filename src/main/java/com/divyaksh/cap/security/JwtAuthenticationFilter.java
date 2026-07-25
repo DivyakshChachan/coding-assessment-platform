@@ -34,27 +34,48 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             return;
         }
 
-        String jwt = authHeader.substring(7);
+        try {
 
-        String username = jwtTokenProvider.extractUsername(jwt);
-        if (username != null &&
-                SecurityContextHolder.getContext().getAuthentication() == null) {
-            UserDetails userDetails =
-                    userDetailsService.loadUserByUsername(username);
-            if (jwtTokenProvider.isTokenValid(jwt, userDetails)) {
+            String jwt = authHeader.substring(7);
 
-                UsernamePasswordAuthenticationToken authentication =
-                        new UsernamePasswordAuthenticationToken(
-                                userDetails,
-                                null,
-                                userDetails.getAuthorities()
-                        );
-                authentication.setDetails(
-                        new WebAuthenticationDetailsSource().buildDetails(request)
-                );
-                SecurityContextHolder.getContext()
-                        .setAuthentication(authentication);
+            String username = jwtTokenProvider.extractUsername(jwt);
+
+            if (username != null &&
+                    SecurityContextHolder.getContext().getAuthentication() == null) {
+
+                UserDetails userDetails =
+                        userDetailsService.loadUserByUsername(username);
+
+                if (jwtTokenProvider.isTokenValid(jwt, userDetails)) {
+
+                    UsernamePasswordAuthenticationToken authentication =
+                            new UsernamePasswordAuthenticationToken(
+                                    userDetails,
+                                    null,
+                                    userDetails.getAuthorities());
+
+                    authentication.setDetails(
+                            new WebAuthenticationDetailsSource()
+                                    .buildDetails(request));
+
+                    SecurityContextHolder.getContext()
+                            .setAuthentication(authentication);
+                }
             }
+
+        } catch (Exception ex) {
+
+            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+            response.setContentType("application/json");
+
+            response.getWriter().write("""
+        {
+            "success": false,
+            "message": "Invalid or expired token."
+        }
+        """);
+
+            return;
         }
 
         filterChain.doFilter(request, response);

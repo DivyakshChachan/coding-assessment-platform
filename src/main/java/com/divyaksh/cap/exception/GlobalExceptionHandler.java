@@ -6,20 +6,16 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
-import org.springframework.web.bind.MethodArgumentNotValidException;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.HashMap;
-
+import org.springframework.security.authorization.AuthorizationDeniedException;
 @RestControllerAdvice
 public class GlobalExceptionHandler {
+
     @ExceptionHandler(ResourceNotFoundException.class)
     public ResponseEntity<ApiResponse<Void>> handleNotFound(ResourceNotFoundException ex) {
 
-        ApiResponse<Void> response = ApiResponse.<Void>builder()
-                .success(false)
-                .message(ex.getMessage())
-                .build();
+        ApiResponse<Void> response = ApiResponse.error(ex.getMessage());
 
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
     }
@@ -27,10 +23,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(DuplicateResourceException.class)
     public ResponseEntity<ApiResponse<Void>> handleDuplicate(DuplicateResourceException ex) {
 
-        ApiResponse<Void> response = ApiResponse.<Void>builder()
-                .success(false)
-                .message(ex.getMessage())
-                .build();
+        ApiResponse<Void> response = ApiResponse.error(ex.getMessage());
 
         return ResponseEntity.status(HttpStatus.CONFLICT).body(response);
     }
@@ -38,23 +31,19 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(UnauthorizedException.class)
     public ResponseEntity<ApiResponse<Void>> handleUnauthorized(UnauthorizedException ex) {
 
-        ApiResponse<Void> response = ApiResponse.<Void>builder()
-                .success(false)
-                .message(ex.getMessage())
-                .build();
+        ApiResponse<Void> response = ApiResponse.error(ex.getMessage());
 
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(response);
     }
 
-    @ExceptionHandler(Exception.class)
-    public ResponseEntity<ApiResponse<Void>> handleGeneral(Exception ex) {
+    @ExceptionHandler(AuthorizationDeniedException.class)
+    public ResponseEntity<ApiResponse<Void>> handleAuthorizationDenied(
+            AuthorizationDeniedException ex) {
 
-        ApiResponse<Void> response = ApiResponse.<Void>builder()
-                .success(false)
-                .message("Something went wrong.")
-                .build();
-
-        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
+        return ResponseEntity.status(HttpStatus.FORBIDDEN)
+                .body(ApiResponse.error(
+                        "You are not authorized to access this resource."
+                ));
     }
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<ApiResponse<Map<String, String>>> handleValidationExceptions(
@@ -66,13 +55,20 @@ public class GlobalExceptionHandler {
                 errors.put(error.getField(), error.getDefaultMessage()));
 
         ApiResponse<Map<String, String>> response =
-                ApiResponse.<Map<String, String>>builder()
-                        .success(false)
-                        .message("Validation failed")
-                        .data(errors)
-                        .build();
+                ApiResponse.error(ex.getMessage());
 
         return ResponseEntity.badRequest().body(response);
     }
+    @ExceptionHandler(Exception.class)
+    public ResponseEntity<ApiResponse<Void>> handleGeneral(Exception ex) {
+
+        ApiResponse<Void> response = ApiResponse.<Void>builder()
+                .success(false)
+                .message("Something went wrong.")
+                .build();
+
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
+    }
+
 
 }

@@ -7,11 +7,13 @@ import com.divyaksh.cap.dto.response.UserResponse;
 import com.divyaksh.cap.entity.Role;
 import com.divyaksh.cap.entity.User;
 import com.divyaksh.cap.exception.DuplicateResourceException;
+import com.divyaksh.cap.exception.UnauthorizedException;
 import com.divyaksh.cap.mapper.UserMapper;
 import com.divyaksh.cap.repository.UserRepository;
 import com.divyaksh.cap.security.CustomUserDetails;
 import com.divyaksh.cap.security.JwtTokenProvider;
 import com.divyaksh.cap.service.AuthService;
+import com.divyaksh.cap.util.SecurityUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -79,5 +81,17 @@ public class AuthServiceImpl implements AuthService {
                 .refreshToken(null)
                 .user(userMapper.toResponse(user))
                 .build();
+    }
+    @Override
+    public UserResponse getCurrentUser() {
+
+        CustomUserDetails currentUser =
+                SecurityUtils.getCurrentUser();
+
+        if (currentUser == null) {
+            throw new UnauthorizedException("User is not authenticated.");
+        }
+
+        return userMapper.toResponse(currentUser.getUser());
     }
 }

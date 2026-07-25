@@ -10,6 +10,7 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -21,17 +22,12 @@ public class AuthController {
 
     @PostMapping("/register")
     public ResponseEntity<ApiResponse<UserResponse>> register(
-            @Valid @RequestBody RegisterRequest request) {
+            @RequestBody @Valid RegisterRequest request) {
 
-        UserResponse user = authService.register(request);
-
-        ApiResponse<UserResponse> response = ApiResponse.<UserResponse>builder()
-                .success(true)
-                .message("User registered successfully")
-                .data(user)
-                .build();
-
-        return ResponseEntity.status(HttpStatus.CREATED).body(response);
+        return ResponseEntity.ok(
+                ApiResponse.success("User registered successfully",
+                        authService.register(request))
+        );
     }
     @PostMapping("/login")
     public ResponseEntity<ApiResponse<AuthResponse>> login(
@@ -55,5 +51,12 @@ public class AuthController {
         public String hello() {
             return "JWT Authentication Working!";
         }
+    }
+    @GetMapping("/me")
+    public ResponseEntity<ApiResponse<UserResponse>> getCurrentUser() {
+
+        return ResponseEntity.ok(
+                ApiResponse.success(authService.getCurrentUser())
+        );
     }
 }
