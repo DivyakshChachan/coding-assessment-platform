@@ -3,6 +3,9 @@ package com.divyaksh.cap.entity;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Entity
 @Table(name = "users")
 @Getter
@@ -45,4 +48,12 @@ public class User {
     @Column(nullable = false)
     @Builder.Default
     private boolean credentialsNonExpired = true;
+
+    @OneToMany(
+            mappedBy = "user",
+            cascade = CascadeType.ALL,
+            orphanRemoval = true
+    )
+    @Builder.Default
+    private List<ContestRegistration> contestRegistrations = new ArrayList<>();
 }

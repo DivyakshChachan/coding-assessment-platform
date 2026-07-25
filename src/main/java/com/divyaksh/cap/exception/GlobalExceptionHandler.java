@@ -69,6 +69,12 @@ public class GlobalExceptionHandler {
 
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
     }
+    @ExceptionHandler(IllegalOperationException.class)
+    public ResponseEntity<ApiResponse<Object>> handleIllegalOperationException(
+            IllegalOperationException ex) {
 
+        return ResponseEntity.badRequest()
+                .body(ApiResponse.error(ex.getMessage()));
+    }
 
 }

@@ -12,4 +12,6 @@ public interface ProblemRepository extends JpaRepository<Problem, Long> {
     boolean existsBySlug(String slug);
 
     boolean existsByTitle(String title);
+
+    boolean existsById(Long id);
 }

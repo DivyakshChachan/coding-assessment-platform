@@ -9,6 +9,9 @@ import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Entity
 @Table(name = "problems")
 @Getter
@@ -66,6 +69,22 @@ public class Problem {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "created_by", nullable = false)
     private User createdBy;
+
+    @OneToMany(
+            mappedBy = "problem",
+            cascade = CascadeType.ALL,
+            orphanRemoval = true
+    )
+    @Builder.Default
+    private List<TestCase> testCases = new ArrayList<>();
+
+    @OneToMany(
+            mappedBy = "problem",
+            cascade = CascadeType.ALL,
+            orphanRemoval = true
+    )
+    @Builder.Default
+    private List<ContestProblem> contestProblems = new ArrayList<>();
 
     @Column(nullable = false, updatable = false)
     private LocalDateTime createdAt;
