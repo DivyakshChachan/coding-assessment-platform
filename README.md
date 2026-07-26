@@ -135,7 +135,7 @@ http://localhost:8080/swagger-ui/index.html
 ## Clone
 
 ```bash
-git clone https://github.com/<your-username>/coding-assessment-platform.git
+git clone https://github.com/DivyakshChachan/coding-assessment-platform.git
 ```
 
 ```bash
