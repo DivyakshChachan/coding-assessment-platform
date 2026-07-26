@@ -4,6 +4,7 @@ import com.divyaksh.cap.dto.response.ContestRegistrationResponse;
 import com.divyaksh.cap.entity.Contest;
 import com.divyaksh.cap.entity.ContestRegistration;
 import com.divyaksh.cap.entity.User;
+import com.divyaksh.cap.entity.enums.ContestStatus;
 import com.divyaksh.cap.exception.DuplicateResourceException;
 import com.divyaksh.cap.exception.ResourceNotFoundException;
 import com.divyaksh.cap.mapper.ContestRegistrationMapper;
@@ -18,7 +19,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDateTime;
 import java.util.List;
-import com.divyaksh.cap.entity.enums.ContestStatus;
+
 import com.divyaksh.cap.exception.IllegalOperationException;
 
 @Service

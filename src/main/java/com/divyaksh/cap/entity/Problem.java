@@ -86,6 +86,14 @@ public class Problem {
     @Builder.Default
     private List<ContestProblem> contestProblems = new ArrayList<>();
 
+    @OneToMany(
+            mappedBy = "problem",
+            cascade = CascadeType.ALL,
+            orphanRemoval = true
+    )
+    @Builder.Default
+    private List<Submission> submissions = new ArrayList<>();
+
     @Column(nullable = false, updatable = false)
     private LocalDateTime createdAt;
 

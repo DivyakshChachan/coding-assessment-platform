@@ -1,4 +1,4 @@
-package com.divyaksh.cap.constant;
+package com.divyaksh.cap.entity.enums;
 
 public enum ContestStatus {
 
@@ -7,6 +7,8 @@ public enum ContestStatus {
     PUBLISHED,
 
     ONGOING,
+
+    CANCELLED,
 
     FINISHED,
 

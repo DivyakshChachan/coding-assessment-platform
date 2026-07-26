@@ -56,4 +56,12 @@ public class User {
     )
     @Builder.Default
     private List<ContestRegistration> contestRegistrations = new ArrayList<>();
+
+    @OneToMany(
+            mappedBy = "candidate",
+            cascade = CascadeType.ALL,
+            orphanRemoval = true
+    )
+    @Builder.Default
+    private List<Submission> submissions = new ArrayList<>();
 }

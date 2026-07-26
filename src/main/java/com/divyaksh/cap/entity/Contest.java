@@ -1,6 +1,7 @@
 package com.divyaksh.cap.entity;
 
-import com.divyaksh.cap.entity.enums.ContestStatus;
+import com.divyaksh.cap.entity.enums.
+        ContestStatus;
 import com.divyaksh.cap.entity.enums.ContestVisibility;
 import jakarta.persistence.*;
 import lombok.*;
@@ -48,11 +49,13 @@ public class Contest {
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     @Builder.Default
-    private ContestStatus status = ContestStatus.DRAFT;
+    private
+    ContestStatus status = ContestStatus.DRAFT;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "created_by", nullable = false)
     private User createdBy;
+
 
     @OneToMany(mappedBy = "contest",
             cascade = CascadeType.ALL,
@@ -67,6 +70,14 @@ public class Contest {
     )
     @Builder.Default
     private List<ContestRegistration> registrations = new ArrayList<>();
+
+    @OneToMany(
+            mappedBy = "contest",
+            cascade = CascadeType.ALL,
+            orphanRemoval = true
+    )
+    @Builder.Default
+    private List<Submission> submissions = new ArrayList<>();
 
     @Column(nullable = false, updatable = false)
     private LocalDateTime createdAt;

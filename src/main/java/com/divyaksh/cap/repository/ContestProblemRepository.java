@@ -22,4 +22,5 @@ public interface ContestProblemRepository
             Contest contest,
             Problem problem
     );
+
 }
