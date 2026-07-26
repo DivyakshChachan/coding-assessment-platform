@@ -4,8 +4,8 @@ spring:
 
   datasource:
     url: jdbc:postgresql://localhost:5432/coding_assessment
-    username: ${DB_USERNAME}
-    password: ${DB_PASSWORD}
+    username: divyakshchachan
+    password: postgres
 
   jpa:
     hibernate:
