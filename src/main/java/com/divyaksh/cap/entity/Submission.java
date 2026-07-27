@@ -59,6 +59,9 @@ public class Submission {
     @Column(nullable = false)
     private LocalDateTime updatedAt;
 
+    @Version
+    private Long version;
+
     @PrePersist
     public void onCreate() {
         submittedAt = LocalDateTime.now();

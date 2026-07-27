@@ -52,6 +52,9 @@ public class Contest {
     private
     ContestStatus status = ContestStatus.DRAFT;
 
+    @Version
+    private Long version;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "created_by", nullable = false)
     private User createdBy;

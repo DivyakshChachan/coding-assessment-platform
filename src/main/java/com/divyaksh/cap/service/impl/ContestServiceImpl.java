@@ -14,6 +14,9 @@ import com.divyaksh.cap.security.CustomUserDetails;
 import com.divyaksh.cap.service.ContestService;
 import com.divyaksh.cap.util.SecurityUtils;
 import lombok.RequiredArgsConstructor;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.CachePut;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -48,8 +51,8 @@ public class ContestServiceImpl implements ContestService {
 
     @Override
     @Transactional(readOnly = true)
+    @Cacheable(value = "contests")
     public ContestResponse getContest(Long contestId) {
-
         Contest contest = contestRepository.findById(contestId)
                 .orElseThrow(() ->
                         new ResourceNotFoundException("Contest not found."));
@@ -60,7 +63,6 @@ public class ContestServiceImpl implements ContestService {
     @Override
     @Transactional(readOnly = true)
     public List<ContestResponse> getPublishedContests() {
-
         return contestRepository.findAllByStatus(ContestStatus.PUBLISHED)
                 .stream()
                 .map(contestMapper::toResponse)
@@ -68,6 +70,8 @@ public class ContestServiceImpl implements ContestService {
     }
 
     @Override
+    @CachePut(cacheNames = "contests", key = "#contestId")
+    @Transactional
     public ContestResponse updateContest(Long contestId,
                                          UpdateContestRequest request) {
 
@@ -111,6 +115,7 @@ public class ContestServiceImpl implements ContestService {
     }
 
     @Override
+    @CacheEvict(cacheNames = "contests", key = "#contestId")
     public void deleteContest(Long contestId) {
 
         Contest contest = contestRepository.findById(contestId)

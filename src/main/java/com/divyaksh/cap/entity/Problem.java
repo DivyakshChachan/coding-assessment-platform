@@ -78,6 +78,9 @@ public class Problem {
     @Builder.Default
     private List<TestCase> testCases = new ArrayList<>();
 
+    @Version
+    private Long version;
+
     @OneToMany(
             mappedBy = "problem",
             cascade = CascadeType.ALL,

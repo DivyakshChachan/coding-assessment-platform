@@ -11,6 +11,7 @@ import com.divyaksh.cap.repository.ContestRepository;
 import com.divyaksh.cap.repository.SubmissionRepository;
 import com.divyaksh.cap.service.LeaderboardService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -26,6 +27,7 @@ public class LeaderboardServiceImpl implements LeaderboardService {
     private final SubmissionRepository submissionRepository;
 
     @Override
+    @Cacheable(cacheNames = "leaderboards")
     public List<LeaderboardEntryResponse> getLeaderboard(Long contestId) {
 
         Contest contest = contestRepository.findById(contestId)

@@ -5,6 +5,7 @@ import com.divyaksh.cap.entity.enums.SubmissionStatus;
 import com.divyaksh.cap.repository.SubmissionRepository;
 import com.divyaksh.cap.service.JudgeService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -18,7 +19,10 @@ public class DummyJudgeServiceImpl implements JudgeService {
     private final SubmissionRepository submissionRepository;
 
     @Override
+    @CacheEvict(cacheNames = "leaderboards")
+    @Transactional
     public void judge(Submission submission) {
+
 
         submission.setStatus(SubmissionStatus.RUNNING);
 
