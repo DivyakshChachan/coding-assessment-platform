@@ -1,0 +1,51 @@
+version: "3.9"
+
+services:
+
+  postgres:
+    image: postgres:17
+    container_name: cap-postgres
+
+    environment:
+      POSTGRES_DB: cap
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password
+
+    ports:
+      - "5432:5432"
+
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+
+  redis:
+    image: redis:8
+
+    container_name: cap-redis
+
+    ports:
+      - "6379:6379"
+
+  app:
+    build: .
+
+    container_name: cap-app
+
+    depends_on:
+      - postgres
+      - redis
+
+    ports:
+      - "8080:8080"
+
+    environment:
+      DB_HOST: postgres
+      DB_PORT: 5432
+      DB_NAME: cap
+      DB_USERNAME: postgres
+      DB_PASSWORD: password
+
+      REDIS_HOST: redis
+      REDIS_PORT: 6379
+
+volumes:
+  postgres-data:
